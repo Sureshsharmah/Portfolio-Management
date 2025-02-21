@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Portfolio Growth</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            max-width: 500px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+        h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        label {
+            font-size: 16px;
+            font-weight: 500;
+            display: block;
+            margin: 10px 0 5px;
+        }
+        select, input {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0 15px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+        button {
+            background: #ff7eb3;
+            color: white;
+            padding: 12px 20px;
+            font-size: 18px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover {
+            background: #ff4e88;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        img {
+            margin-top: 15px;
+            max-width: 100%;
+            border-radius: 6px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .error {
+            color: #ff4e88;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>📈 Stock Portfolio Growth Calculator</h2>
+        <form method="post">
+            <label for="stock_symbol">Select Stock:</label>
+            <select name="stock_symbol" required>
+                {% for stock in stocks %}
+                    <option value="{{ stock }}">{{ stock }}</option>
+                {% endfor %}
+            </select>
+            <label for="investment_amount">Monthly Investment ($):</label>
+            <input type="number" name="investment_amount" step="0.01" required>
+            <button type="submit">Calculate</button>
+        </form>
+
+        {% if final_value is not none %}
+            <div class="result">
+                <p>💰 <strong>Total Investment:</strong> ${{ total_investment | round(2) }}</p>
+                <p>📊 <strong>Final Portfolio Value:</strong> ${{ final_value | round(2) }}</p>
+            </div>
+            <img src="data:image/png;base64,{{ chart }}" alt="Portfolio Growth Chart">
+        {% endif %}
+
+        {% if error %}
+            <p class="error">⚠️ Error: {{ error }}</p>
+        {% endif %}
+    </div>
+</body>
+</html>
